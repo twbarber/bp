@@ -24,8 +24,8 @@ paths:
   /user/{id}:
     get:
       summary: User Information
-      description: |
-        The User endpoint returns information about the user.
+      description:
+        User endpoint returns information about the user.
       parameters:
         - name: id
           in: path
@@ -67,7 +67,7 @@ paths:
         - User
       responses:
         "204":
-          description: User Deletd
+          description: User Deleted
 
   /user/{id}/redeem:
     post:
@@ -114,10 +114,58 @@ paths:
 
   /location:
     post:
-      summary: Item Creation.
+      summary: Location Creation.
       responses:
         "201":
-          description:  Item Created
+          description:  Location Created
+
+  /location/{id}:
+    get:
+      summary: Location Information
+      description:
+        Location endpoint returns information about the location.
+      parameters:
+        - name: id
+          in: path
+          description: Location
+          required: true
+          type: string
+          format: string
+      tags:
+        - Location
+      responses:
+        "200":
+          description: An Location object
+          schema:
+            $ref: '#/definitions/Location'
+    put:
+      summary: Location Modification
+      parameters:
+      - name: id
+        in: path
+        description: ID of Location
+        required: true
+        type: string
+        format: string
+      tags:
+        - Location
+      responses:
+        "200":
+          description: Location Updated
+    delete:
+      summary: Location Deletion
+      parameters:
+      - name: id
+        in: path
+        description: ID of Location
+        required: true
+        type: string
+        format: string
+      tags:
+        - Location
+      responses:
+        "204":
+          description: Location Deleted
 
 ################################################################################
 #                                   Items                                      #
@@ -129,6 +177,56 @@ paths:
       responses:
         "201":
           description:  Item Created
+          schema:
+            $ref: '#/definitions/Item'
+
+  /item/{id}:
+    get:
+      summary: Item Information
+      description:
+        The Item endpoint returns information about the item.
+      parameters:
+        - name: id
+          in: path
+          description: Item
+          required: true
+          type: string
+          format: string
+      tags:
+        - Item
+      responses:
+        "200":
+          description: An Item object
+          schema:
+            $ref: '#/definitions/Item'
+    put:
+      summary: Item Modification
+      parameters:
+      - name: id
+        in: path
+        description: ID of Item
+        required: true
+        type: string
+        format: string
+      tags:
+        - Item
+      responses:
+        "200":
+          description: Item Updated
+    delete:
+      summary: Item Deletion
+      parameters:
+      - name: id
+        in: path
+        description: ID of Item
+        required: true
+        type: string
+        format: string
+      tags:
+        - Item
+      responses:
+        "204":
+          description: Item Deleted
 
 ################################################################################
 #                                    Plan                                      #
@@ -141,16 +239,68 @@ paths:
           "201":
             description:  Plan Created
 
+  /plan/{id}:
+    get:
+      summary: Plan Information
+      description:
+        The Plan endpoint returns information about the plan.
+      parameters:
+        - name: id
+          in: path
+          description: Plan
+          required: true
+          type: string
+          format: string
+      tags:
+        - Plan
+      responses:
+        "200":
+          description: An Plan object
+          schema:
+            $ref: '#/definitions/Plan'
+    put:
+      summary: Plan Modification
+      parameters:
+      - name: id
+        in: path
+        description: ID of Plan
+        required: true
+        type: string
+        format: string
+      tags:
+        - Plan
+      responses:
+        "200":
+          description: Plan Updated
+    delete:
+      summary: Plan Deletion
+      parameters:
+      - name: id
+        in: path
+        description: ID of Plan
+        required: true
+        type: string
+        format: string
+      tags:
+        - Plan
+      responses:
+        "204":
+          description: Plan Deleted
+
 ################################################################################
 #                                   Purchase                                   #
 ################################################################################
   
   /purchase:
       get:
-        summary: New Redemption
+        summary: New Purchase
         responses:
           "201":
-            description: Redemption Successful
+            description: Purchase Successful
+          "400":
+            description: Client Error During Purchase
+          "500":
+            description: Server Error During Purchase
 
 ################################################################################
 #                                  Promotions                                  #
@@ -162,6 +312,54 @@ paths:
             responses:
               "201":
                 description:  Promotion Created
+
+  /promotion/{id}:
+    get:
+      summary: Promotion Information
+      description:
+        Promotion endpoint returns information about the promotion.
+      parameters:
+        - name: id
+          in: path
+          description: Promotion
+          required: true
+          type: string
+          format: string
+      tags:
+        - Promotion
+      responses:
+        "200":
+          description: An Promotion object
+          schema:
+            $ref: '#/definitions/Promotion'
+    put:
+      summary: Promotion Modification
+      parameters:
+      - name: id
+        in: path
+        description: ID of Promotion
+        required: true
+        type: string
+        format: string
+      tags:
+        - Promotion
+      responses:
+        "200":
+          description: Promotion Updated
+    delete:
+      summary: Promotion Deletion
+      parameters:
+      - name: id
+        in: path
+        description: ID of Promotion
+        required: true
+        type: string
+        format: string
+      tags:
+        - Promotion
+      responses:
+        "204":
+          description: Promotion Deleted
          
 ################################################################################
 #                                 Definitions                                  #
@@ -290,7 +488,7 @@ definitions:
       itemId: 
         type: array
         items:
-          title: drinkIds
+           title: drinkIds
            type: string
       addOns:
         type: array
@@ -301,5 +499,17 @@ definitions:
             id:
               type: string
       date:
+        type: string
+        format: date-time
+        
+  Promotion:
+    type: object
+    properties:
+      id:
+        type: string
+      startDate: 
+        type: string
+        format: date-time
+      endDate:
         type: string
         format: date-time
