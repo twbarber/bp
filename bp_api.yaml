@@ -69,9 +69,9 @@ paths:
         "204":
           description: User Deleted
 
-  /user/{id}/redeem:
+  /user/{id}/purchase:
     post:
-      summary: Redemption For User
+      summary: Purchase For User
       parameters:
       - name: id
         in: path
@@ -81,17 +81,17 @@ paths:
         format: string
       - name: body
         in: body
-        description: Request to process for redemption
+        description: Request to process for purchase
         required: true
         schema: 
           $ref: '#/definitions/Purchase'
       responses:
         "201":
-          description:  Redemption Successful
+          description:  Purchase Successful
 
   /user/{id}/subscriptions:
     post:
-      summary: Redemption For User
+      summary: subscriptions For User
       parameters:
       - name: id
         in: path
@@ -103,10 +103,10 @@ paths:
         description: Request to process for redemption
         required: true
         schema: 
-          $ref: '#/definitions/Purchase'
+          $ref: '#/definitions/subscription'
       responses:
         "201":
-          description:  Redemption Successful
+          description:  Subscription added to User
 
 ################################################################################
 #                                 Location                                     #
@@ -168,10 +168,10 @@ paths:
           description: Location Deleted
 
 ################################################################################
-#                                   Items                                      #
+#                               Location Items                                 #
 ################################################################################
 
-  /item:
+  /location/{id}/items:
     post:
       summary: Item Creation.
       responses:
@@ -180,7 +180,7 @@ paths:
           schema:
             $ref: '#/definitions/Item'
 
-  /item/{id}:
+  /location/{id}/items/{id}:
     get:
       summary: Item Information
       description:
@@ -227,6 +227,71 @@ paths:
       responses:
         "204":
           description: Item Deleted
+
+################################################################################
+#                             Location AddOn                                   #
+################################################################################
+
+  /location/{id}/addons:
+    get:
+      summary: AddOns from a Location
+      description:
+        The AddOn endpoint returns information about the addons.
+    post:
+      summary: AddOn Creation.
+      responses:
+        "201":
+          descriptioAddOn Created
+          schema:
+            $ref: '#/definitions/AddOn'
+
+  /location/{id}/addons/{id}:
+    get:
+      summary: AddOn Information
+      description:
+        The AddOn endpoint returns information about the addon.
+      parameters:
+        - name: id
+          in: path
+          description: AddOn
+          required: true
+          type: string
+          format: string
+      tags:
+        - AddOn
+      responses:
+        "200":
+          description: An AddOn object
+          schema:
+            $ref: '#/definitions/AddOn'
+    put:
+      summary: AddOn Modification
+      parameters:
+      - name: id
+        in: path
+        description: ID of AddOn
+        required: true
+        type: string
+        format: string
+      tags:
+        - AddOn
+      responses:
+        "200":
+          description: AddOn Updated
+    delete:
+      summary: AddOn Deletion
+      parameters:
+      - name: id
+        in: path
+        description: ID of AddOn
+        required: true
+        type: string
+        format: string
+      tags:
+        - AddOn
+      responses:
+        "204":
+          description: AddOn Deleted
 
 ################################################################################
 #                                    Plan                                      #
