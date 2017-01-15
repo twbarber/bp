@@ -103,7 +103,7 @@ paths:
         description: Request to process for redemption
         required: true
         schema: 
-          $ref: '#/definitions/subscription'
+          $ref: '#/definitions/Subscription'
       responses:
         "201":
           description:  Subscription added to User
@@ -171,27 +171,40 @@ paths:
 #                               Location Items                                 #
 ################################################################################
 
-  /location/{id}/items:
+  /location/{locationId}/items:
     post:
       summary: Item Creation.
+      parameters:
+        - name: locationId
+          in: path
+          description: Item
+          required: true
+          type: string
+          format: string
       responses:
         "201":
           description:  Item Created
           schema:
             $ref: '#/definitions/Item'
 
-  /location/{id}/items/{id}:
+  /location/{locationId}/items/{id}:
     get:
       summary: Item Information
       description:
         The Item endpoint returns information about the item.
       parameters:
-        - name: id
-          in: path
-          description: Item
-          required: true
-          type: string
-          format: string
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
+      - name: id
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
       tags:
         - Item
       responses:
@@ -202,9 +215,15 @@ paths:
     put:
       summary: Item Modification
       parameters:
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
       - name: id
         in: path
-        description: ID of Item
+        description: Item
         required: true
         type: string
         format: string
@@ -216,9 +235,15 @@ paths:
     delete:
       summary: Item Deletion
       parameters:
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
       - name: id
         in: path
-        description: ID of Item
+        description: Item
         required: true
         type: string
         format: string
@@ -232,31 +257,56 @@ paths:
 #                             Location AddOn                                   #
 ################################################################################
 
-  /location/{id}/addons:
+  /location/{locationId}/addons:
     get:
       summary: AddOns from a Location
       description:
         The AddOn endpoint returns information about the addons.
-    post:
-      summary: AddOn Creation.
+      parameters:
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
       responses:
         "201":
-          descriptioAddOn Created
+          description: AddOn Created
+          schema:
+            $ref: '#/definitions/AddOn'
+    post:
+      summary: AddOn Creation.
+      parameters:
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
+      responses:
+        "201":
+          description: AddOn Created
           schema:
             $ref: '#/definitions/AddOn'
 
-  /location/{id}/addons/{id}:
+  /location/{locationId}/addons/{id}:
     get:
       summary: AddOn Information
       description:
         The AddOn endpoint returns information about the addon.
       parameters:
-        - name: id
-          in: path
-          description: AddOn
-          required: true
-          type: string
-          format: string
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
+      - name: id
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
       tags:
         - AddOn
       responses:
@@ -267,9 +317,15 @@ paths:
     put:
       summary: AddOn Modification
       parameters:
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
       - name: id
         in: path
-        description: ID of AddOn
+        description: Item
         required: true
         type: string
         format: string
@@ -281,9 +337,15 @@ paths:
     delete:
       summary: AddOn Deletion
       parameters:
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
       - name: id
         in: path
-        description: ID of AddOn
+        description: Item
         required: true
         type: string
         format: string
@@ -459,7 +521,7 @@ definitions:
       state:
         type: string
       zip: 
-        type: string 
+        type: string
 
   Item:
     type: object
@@ -468,7 +530,7 @@ definitions:
         type: string
       name: 
         type: string
-      location:
+      locationId:
         type: string
       marketPrice:
         type: number
@@ -490,8 +552,6 @@ definitions:
     type: object
     properties:
       id:
-        type: string
-      itemId:
         type: string
       name:
         type: string
@@ -518,15 +578,7 @@ definitions:
         type: string
       userId:
         type: string
-      activeSubscriptions:
-        type: array
-        items:
-          title: activeSubscriptions
-          type: object
-          properties:
-            id: 
-              type: string
-
+    
   Subscription:
     type: object
     properties:
