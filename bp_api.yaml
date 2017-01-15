@@ -624,6 +624,14 @@ definitions:
     properties:
       id:
         type: string
+      name:
+        type: string
+      code:
+        type: string
+      type:
+        type: string
+      value:
+        type: number
       startDate: 
         type: string
         format: date-time
