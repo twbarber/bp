@@ -143,10 +143,10 @@ paths:
             description:  Plan Created
 
 ################################################################################
-#                                 Redemptions                                  #
+#                                   Purchase                                   #
 ################################################################################
   
-  /redemption:
+  /purchase:
       get:
         summary: New Redemption
         responses:
@@ -186,6 +186,8 @@ definitions:
   Location:
     type: object
     properties:
+      id: 
+        type: string
       name:
         type: string
       address:
@@ -200,15 +202,45 @@ definitions:
   Item:
     type: object
     properties:
+      id:
+        type: string
       name: 
         type: string
+      location:
+        type: string
+      marketPrice:
+        type: double
+      nonMemberPrice:
+        type: double
+      nonMemberCompensationPrice:
+        type: double
+      memberPrice:
+        type: double
+      memberCompensationPrice: 
+        type: double
 
   AddOn:
     type: object
+    properties:
+      id: string
+      itemId: string
+      name: string
+      marketPrice:
+        type: double
+      nonMemberPrice:
+        type: double
+      nonMemberCompensationPrice:
+        type: double
+      memberPrice:
+        type: double
+      memberCompensationPrice: 
+        type: double
 
   Plan:
     type: object
     properties:
+      id: 
+        type: string
       userId:
         type: string
       activeSubscriptions:
@@ -217,12 +249,30 @@ definitions:
           title: activeSubscriptions
           type: object
           properties:
-            id:
+            id: 
               type: string
 
-  Redemption:
+  Subscription:
     type: object
     properties:
+      id: 
+        type: string
+      userId:
+        type: string
+      planId:
+        type: stringSubsc
+      startDate:
+        type: string
+        format: date-time
+      endDate:
+        type: string
+        format: date-time
+
+  Purchase:
+    type: object
+    properties:
+      id: 
+        type: string
       userId:
         type: string
       drinkId: 
@@ -235,9 +285,6 @@ definitions:
           properties:
             id:
               type: string
-      startDate:
-        type: string
-        format: date-time
-      endDate:
+      date:
         type: string
         format: date-time
