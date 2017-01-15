@@ -415,21 +415,6 @@ paths:
           description: Plan Deleted
 
 ################################################################################
-#                                   Purchase                                   #
-################################################################################
-  
-  /purchase:
-    get:
-      summary: New Purchase
-      responses:
-        "201":
-          description: Purchase Successful
-        "400":
-          description: Client Error During Purchase
-        "500":
-          description: Server Error During Purchase
-
-################################################################################
 #                                  Promotions                                  #
 ################################################################################
 
