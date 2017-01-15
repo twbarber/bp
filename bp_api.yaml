@@ -84,7 +84,7 @@ paths:
         description: Request to process for redemption
         required: true
         schema: 
-          $ref: '#/definitions/Redemption'
+          $ref: '#/definitions/Purchase'
       responses:
         "201":
           description:  Redemption Successful
@@ -98,13 +98,12 @@ paths:
         description: ID of User
         required: true
         type: string
-        format: string
       - name: body
         in: body
         description: Request to process for redemption
         required: true
         schema: 
-          $ref: '#/definitions/Redemption'
+          $ref: '#/definitions/Purchase'
       responses:
         "201":
           description:  Redemption Successful
@@ -209,32 +208,45 @@ definitions:
       location:
         type: string
       marketPrice:
-        type: double
+        type: number
+        format: double
       nonMemberPrice:
-        type: double
+        type: number
+        format: double
       nonMemberCompensationPrice:
-        type: double
+        type: number
+        format: double
       memberPrice:
-        type: double
+        type: number
+        format: double
       memberCompensationPrice: 
-        type: double
+        type: number
+        format: double
 
   AddOn:
     type: object
     properties:
-      id: string
-      itemId: string
-      name: string
+      id:
+        type: string
+      itemId:
+        type: string
+      name:
+        type: string
       marketPrice:
-        type: double
+        type: number
+        format: double
       nonMemberPrice:
-        type: double
+        type: number
+        format: double
       nonMemberCompensationPrice:
-        type: double
+        type: number
+        format: double
       memberPrice:
-        type: double
+        type: number
+        format: double
       memberCompensationPrice: 
-        type: double
+        type: number
+        format: double
 
   Plan:
     type: object
@@ -255,13 +267,13 @@ definitions:
   Subscription:
     type: object
     properties:
-      id: 
+      id:
         type: string
       userId:
         type: string
       planId:
-        type: stringSubsc
-      startDate:
+        type: string
+      startDate: 
         type: string
         format: date-time
       endDate:
@@ -276,7 +288,9 @@ definitions:
       userId:
         type: string
       drinkId: 
-        type: string
+        type: array
+        items:
+          title: drinks
       addOns:
         type: array
         items:
