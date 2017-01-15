@@ -285,12 +285,13 @@ definitions:
     properties:
       id: 
         type: string
-      userId:
+      subscriptionId:
         type: string
-      drinkId: 
+      itemId: 
         type: array
         items:
-          title: drinks
+          title: drinkIds
+           type: string
       addOns:
         type: array
         items:
