@@ -233,11 +233,11 @@ paths:
 ################################################################################ 
 
   /plan:
-      post:
-        summary: Plan Creation.
-        responses:
-          "201":
-            description:  Plan Created
+    post:
+      summary: Plan Creation.
+      responses:
+        "201":
+          description:  Plan Created
 
   /plan/{id}:
     get:
@@ -292,26 +292,26 @@ paths:
 ################################################################################
   
   /purchase:
-      get:
-        summary: New Purchase
-        responses:
-          "201":
-            description: Purchase Successful
-          "400":
-            description: Client Error During Purchase
-          "500":
-            description: Server Error During Purchase
+    get:
+      summary: New Purchase
+      responses:
+        "201":
+          description: Purchase Successful
+        "400":
+          description: Client Error During Purchase
+        "500":
+          description: Server Error During Purchase
 
 ################################################################################
 #                                  Promotions                                  #
 ################################################################################
 
   /promotion:
-      post:
-            summary: Promotion Creation.
-            responses:
-              "201":
-                description:  Promotion Created
+    post:
+      summary: Promotion Creation.
+      responses:
+        "201":
+          description:  Promotion Created
 
   /promotion/{id}:
     get:
