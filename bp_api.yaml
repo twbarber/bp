@@ -17,17 +17,28 @@ paths:
   /user:
     post:
       summary: User Creation.
+      description:
+       Submit a Createuser object in order to creat a user in BrewPass
+      parameters:
+        - in: body
+          name: body
+          description: CreateUser Object
+          required: true
+          schema:
+            $ref: "#/definitions/CreateUser"
       responses:
         "201":
-          description:  User Created
-            
-  /user/{id}:
+          description: User Created
+        "409":
+          description: Account with that email already exists.
+          
+  /user/{userId}:
     get:
       summary: User Information
       description:
         User endpoint returns information about the user.
       parameters:
-        - name: id
+        - name: userId
           in: path
           description: ID of User
           required: true
@@ -40,24 +51,34 @@ paths:
           description: A User object
           schema:
             $ref: '#/definitions/User'
+        "404":
+          description: User Not Found
     put:
       summary: User Modification
       parameters:
-      - name: id
-        in: path
-        description: ID of User
-        required: true
-        type: string
-        format: string
+        - name: userId
+          in: path
+          description: ID of User
+          required: true
+          type: string
+          format: string
+        - in: body
+          name: user
+          description: User Object
+          required: true
+          schema:
+            $ref: "#/definitions/User"
       tags:
         - User
       responses:
         "200":
           description: User Updated
+        "404":
+          description: User Not Found
     delete:
       summary: User Modification
       parameters:
-      - name: id
+      - name: userId
         in: path
         description: ID of User
         required: true
@@ -68,6 +89,49 @@ paths:
       responses:
         "204":
           description: User Deleted
+        "403":
+          description: Not allowed to modify this User
+        "404":
+          description: User Not Found
+          
+  /user/{userId}/payment:
+    post:
+        summary: User Payment Method Creation.
+        description:
+         Add a credit card to a BrewPass User
+        parameters:
+          - name: userId
+            in: path
+            description: ID of User
+            required: true
+            type: string
+            format: string
+        responses:
+          "201":
+            description:  User Created
+            
+  /user/{userId}/payment/{paymentId}:
+         
+     delete:
+        summary: User Payment Method Deletion.
+        description:
+         Delete a method of payment from a User.
+        parameters:
+          - name: userId
+            in: path
+            description: ID of User
+            required: true
+            type: string
+            format: string
+          - name: paymentId
+            in: path
+            description: ID of User
+            required: true
+            type: string
+            format: string
+        responses:
+          "201":
+            description:  User Created
 
   /user/{id}/purchase:
     post:
@@ -478,19 +542,29 @@ paths:
 ################################################################################   
 definitions:
 
+  CreateUser:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+
   User:
     type: object
     properties:
       userId:
         type: string
-      activeSubscriptions:
-        type: array
-        items:
-          title: activeSubscriptions
-          type: object
-          properties:
-            id:
-              type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
 
   Location:
     type: object
@@ -590,7 +664,7 @@ definitions:
       itemId: 
         type: array
         items:
-           title: drinkIds
+           title: itemIds
            type: string
       addOns:
         type: array
@@ -614,12 +688,25 @@ definitions:
       code:
         type: string
       type:
-        type: string
+        $ref: '#/definitions/PromotionType'
       value:
         type: number
+      items:
+        type: array
+        items:
+           title: itemIds
+           type: string
       startDate: 
         type: string
         format: date-time
       endDate:
         type: string
         format: date-time
+
+  # Enumerated Types of Promotions
+  # Values: PERCENTAGE, ABSOLUTE
+  PromotionType:
+    type: object
+    properties:
+      name: 
+        type: string
