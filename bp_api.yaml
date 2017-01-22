@@ -1,10 +1,10 @@
 swagger: '2.0'
 
 info:
-  version: "0.0.1"
+  version: "2.0.1"
   title: BP API
   
-basePath: /v1
+basePath: /api/v2
 produces:
   - application/json
 
@@ -106,6 +106,9 @@ paths:
             required: true
             type: string
             format: string
+        tags:
+          - User
+          - Payment
         responses:
           "201":
             description:  User Created
@@ -119,16 +122,19 @@ paths:
         parameters:
           - name: userId
             in: path
-            description: ID of User
+            description: Id of User to modify
             required: true
             type: string
             format: string
           - name: paymentId
             in: path
-            description: ID of User
+            description: Payment Id to Delete
             required: true
             type: string
             format: string
+        tags:
+          - User
+          - Payment  
         responses:
           "201":
             description:  User Created
@@ -149,6 +155,9 @@ paths:
         required: true
         schema: 
           $ref: '#/definitions/Purchase'
+      tags:
+        - User
+        - Purchase 
       responses:
         "201":
           description:  Purchase Successful
@@ -168,6 +177,9 @@ paths:
         required: true
         schema: 
           $ref: '#/definitions/Subscription'
+      tags:
+        - User
+        - Subscription 
       responses:
         "201":
           description:  Subscription added to User
@@ -221,7 +233,7 @@ paths:
       parameters:
       - name: id
         in: path
-        description: ID of Location
+        description: Id of Location to Delete
         required: true
         type: string
         format: string
@@ -425,18 +437,27 @@ paths:
 
   /plan:
     post:
-      summary: Plan Creation.
+      summary: Plan Creation
+      parameters:
+      - name: plan
+        in: body
+        description: Plan Information
+        required: true
+        schema:
+            $ref: "#/definitions/Plan"
       responses:
         "201":
-          description:  Plan Created
+          description: Plan Created
+        "409":
+          description: Plan with that name already exists
 
-  /plan/{id}:
+  /plan/{planId}:
     get:
       summary: Plan Information
       description:
         The Plan endpoint returns information about the plan.
       parameters:
-        - name: id
+        - name: planId
           in: path
           description: Plan
           required: true
@@ -452,7 +473,7 @@ paths:
     put:
       summary: Plan Modification
       parameters:
-      - name: id
+      - name: planId
         in: path
         description: ID of Plan
         required: true
@@ -466,7 +487,7 @@ paths:
     delete:
       summary: Plan Deletion
       parameters:
-      - name: id
+      - name: planId
         in: path
         description: ID of Plan
         required: true
@@ -478,6 +499,48 @@ paths:
         "204":
           description: Plan Deleted
 
+  /plan/{planId}/items/{itemId}:
+    post:
+      summary: Single Plan Item Addition
+      parameters:
+      - name: planId
+        in: path
+        description: ID of Plan
+        required: true
+        type: string
+        format: string
+      - name: itemId
+        in: path
+        description: ID of Item
+        required: true
+        type: string
+        format: string
+      tags:
+        - Plan
+      responses:
+        "200":
+          description: Item Added
+    delete:
+      summary: Single Plan Item Deletion
+      parameters:
+      - name: planId
+        in: path
+        description: ID of Plan
+        required: true
+        type: string
+        format: string
+      - name: itemId
+        in: path
+        description: ID of Item
+        required: true
+        type: string
+        format: string
+      tags:
+        - Plan
+      responses:
+        "200":
+          description: Item Removed
+
 ################################################################################
 #                                  Promotions                                  #
 ################################################################################
@@ -485,17 +548,24 @@ paths:
   /promotion:
     post:
       summary: Promotion Creation.
+      parameters:
+        - name: promotion
+          in: body
+          description: Promotion Information
+          required: true
+          schema:
+              $ref: "#/definitions/Promotion"
       responses:
         "201":
           description:  Promotion Created
 
-  /promotion/{id}:
+  /promotion/{promotionId}:
     get:
       summary: Promotion Information
       description:
         Promotion endpoint returns information about the promotion.
       parameters:
-        - name: id
+        - name: promotionId
           in: path
           description: Promotion
           required: true
@@ -511,7 +581,7 @@ paths:
     put:
       summary: Promotion Modification
       parameters:
-      - name: id
+      - name: promotionId
         in: path
         description: ID of Promotion
         required: true
@@ -525,7 +595,7 @@ paths:
     delete:
       summary: Promotion Deletion
       parameters:
-      - name: id
+      - name: promotionId
         in: path
         description: ID of Promotion
         required: true
@@ -590,6 +660,14 @@ definitions:
       name: 
         type: string
       locationId:
+        type: string
+
+  ItemPrice:
+    type: object
+    properties:
+      itemId:
+        type: string
+      size:
         type: string
       marketPrice:
         type: number
@@ -688,7 +766,9 @@ definitions:
       code:
         type: string
       type:
-        $ref: '#/definitions/PromotionType'
+        type: string
+      category: 
+        type: string
       value:
         type: number
       items:
@@ -702,11 +782,3 @@ definitions:
       endDate:
         type: string
         format: date-time
-
-  # Enumerated Types of Promotions
-  # Values: PERCENTAGE, ABSOLUTE
-  PromotionType:
-    type: object
-    properties:
-      name: 
-        type: string
