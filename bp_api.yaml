@@ -114,7 +114,6 @@ paths:
             description:  User Created
             
   /user/{userId}/payment/{paymentId}:
-         
      delete:
         summary: User Payment Method Deletion.
         description:
@@ -182,7 +181,37 @@ paths:
         - Subscription 
       responses:
         "201":
-          description:  Subscription added to User
+          description: Subscription added to User
+        "400":
+          description: Subscription not applicable to user. 
+  
+  /user/{userId}/subscriptions/{subscriptionId}:
+    delete:
+      summary: Cancel Subscription For User
+      description: |
+        Maintains current BrewPass subscription logic. If plan is more expensive, 
+        take effect immediately, otherwise switch subscriptions after current 
+        billing cycle. 
+      parameters:
+      - name: userId
+        in: path
+        description: ID of User
+        required: true
+        type: string
+      - name: subscriptionId
+        in: path
+        description: ID of Location
+        required: true
+        type: string
+        format: string
+      tags:
+        - User
+        - Subscription 
+      responses:
+        "204":
+          description: Subsciption set to Cancel
+        "400":
+          description: Subscription not applicable to user.
 
 ################################################################################
 #                                 Location                                     #
@@ -223,6 +252,12 @@ paths:
         required: true
         type: string
         format: string
+      - in: body
+        name: body
+        description: Location Object
+        required: true
+        schema:
+          $ref: "#/definitions/CreateUser"
       tags:
         - Location
       responses:
@@ -713,9 +748,23 @@ definitions:
     properties:
       id: 
         type: string
-      userId:
+      price:
+        type: number
+        format: double
+      duration:
         type: string
-    
+      stripePlanId:
+        type: string
+      category: 
+        type: string
+      isActive:
+        type: boolean
+      items:
+        type: array
+        items:
+           title: itemIds
+           type: string
+
   Subscription:
     type: object
     properties:
@@ -725,6 +774,10 @@ definitions:
         type: string
       planId:
         type: string
+      stripeSubscriptionId:
+        type: string
+      isActive:
+        type: boolean
       startDate: 
         type: string
         format: date-time
