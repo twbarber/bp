@@ -296,6 +296,8 @@ paths:
         "201":
           description:  Item Created
           schema:
+            type: array
+            title: itemIds
             $ref: '#/definitions/Item'
 
   /location/{locationId}/items/{id}:
@@ -320,9 +322,12 @@ paths:
         - Item
       responses:
         "200":
-          description: An Item object
+          description: Items available at location.
           schema:
-            $ref: '#/definitions/Item'
+            type: array
+            items:
+              type: string
+
     put:
       summary: Item Modification
       parameters:
@@ -696,6 +701,8 @@ definitions:
         type: string
       locationId:
         type: string
+      prices:
+        $ref: '#/definitions/ItemPrice'
 
   ItemPrice:
     type: object
