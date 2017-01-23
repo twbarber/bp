@@ -295,9 +295,7 @@ paths:
       responses:
         "201":
           description:  Item Created
-          schema:
-            type: array
-            title: itemIds
+          schema: 
             $ref: '#/definitions/Item'
 
   /location/{locationId}/items/{id}:
