@@ -214,35 +214,47 @@ paths:
           description: Subscription not applicable to user.
 
 ################################################################################
-#                                 Location                                     #
+#                                   Security                                   #
 ################################################################################ 
 
-  /location:
+  /token:
+    get:
+      summary: Auth Token Retrieval
+      description:
+        Retrieve a token for mobile user use.
+      parameters:
+      - name: userId
+        in: header
+        description: UserId
+        required: true
+        type: string
+        format: string
+      - name: password
+        in: header
+        description: Password
+        required: true
+        type: string
+        format: string
+      responses:
+        "200":
+          description: Token Created and Retrieved
+          schema:
+            $ref: '#/definitions/AuthToken'
+        "400":
+          description: Token Expired or Invalid
+
+################################################################################
+#                                     Admin                                    #
+################################################################################ 
+
+  /admin/location:
     post:
       summary: Location Creation.
       responses:
         "201":
           description:  Location Created
 
-  /location/{id}:
-    get:
-      summary: Location Information
-      description:
-        Location endpoint returns information about the location.
-      parameters:
-        - name: id
-          in: path
-          description: Location
-          required: true
-          type: string
-          format: string
-      tags:
-        - Location
-      responses:
-        "200":
-          description: An Location object
-          schema:
-            $ref: '#/definitions/Location'
+  /admin/location/{id}:
     put:
       summary: Location Modification
       parameters:
@@ -278,11 +290,7 @@ paths:
         "204":
           description: Location Deleted
 
-################################################################################
-#                               Location Items                                 #
-################################################################################
-
-  /location/{locationId}/items:
+  /admin/location/{locationId}/items:
     post:
       summary: Item Creation.
       parameters:
@@ -298,34 +306,7 @@ paths:
           schema: 
             $ref: '#/definitions/Item'
 
-  /location/{locationId}/items/{id}:
-    get:
-      summary: Item Information
-      description:
-        The Item endpoint returns information about the item.
-      parameters:
-      - name: locationId
-        in: path
-        description: Item
-        required: true
-        type: string
-        format: string
-      - name: id
-        in: path
-        description: Item
-        required: true
-        type: string
-        format: string
-      tags:
-        - Item
-      responses:
-        "200":
-          description: Items available at location.
-          schema:
-            type: array
-            items:
-              type: string
-
+  /admin/location/{locationId}/items/{id}:
     put:
       summary: Item Modification
       parameters:
@@ -367,27 +348,7 @@ paths:
         "204":
           description: Item Deleted
 
-################################################################################
-#                             Location AddOn                                   #
-################################################################################
-
-  /location/{locationId}/addons:
-    get:
-      summary: AddOns from a Location
-      description:
-        The AddOn endpoint returns information about the addons.
-      parameters:
-      - name: locationId
-        in: path
-        description: Item
-        required: true
-        type: string
-        format: string
-      responses:
-        "201":
-          description: AddOn Created
-          schema:
-            $ref: '#/definitions/AddOn'
+  /admin/location/{locationId}/addons:
     post:
       summary: AddOn Creation.
       parameters:
@@ -403,31 +364,7 @@ paths:
           schema:
             $ref: '#/definitions/AddOn'
 
-  /location/{locationId}/addons/{id}:
-    get:
-      summary: AddOn Information
-      description:
-        The AddOn endpoint returns information about the addon.
-      parameters:
-      - name: locationId
-        in: path
-        description: Item
-        required: true
-        type: string
-        format: string
-      - name: id
-        in: path
-        description: Item
-        required: true
-        type: string
-        format: string
-      tags:
-        - AddOn
-      responses:
-        "200":
-          description: An AddOn object
-          schema:
-            $ref: '#/definitions/AddOn'
+  /admin/location/{locationId}/addons/{id}:
     put:
       summary: AddOn Modification
       parameters:
@@ -469,11 +406,7 @@ paths:
         "204":
           description: AddOn Deleted
 
-################################################################################
-#                                    Plan                                      #
-################################################################################ 
-
-  /plan:
+  /admin/plan:
     post:
       summary: Plan Creation
       parameters:
@@ -489,25 +422,7 @@ paths:
         "409":
           description: Plan with that name already exists
 
-  /plan/{planId}:
-    get:
-      summary: Plan Information
-      description:
-        The Plan endpoint returns information about the plan.
-      parameters:
-        - name: planId
-          in: path
-          description: Plan
-          required: true
-          type: string
-          format: string
-      tags:
-        - Plan
-      responses:
-        "200":
-          description: An Plan object
-          schema:
-            $ref: '#/definitions/Plan'
+  /admin/plan/{planId}:
     put:
       summary: Plan Modification
       parameters:
@@ -537,7 +452,7 @@ paths:
         "204":
           description: Plan Deleted
 
-  /plan/{planId}/items/{itemId}:
+  /admin/plan/{planId}/items/{itemId}:
     post:
       summary: Single Plan Item Addition
       parameters:
@@ -579,11 +494,7 @@ paths:
         "200":
           description: Item Removed
 
-################################################################################
-#                                  Promotions                                  #
-################################################################################
-
-  /promotion:
+  /admin/promotion:
     post:
       summary: Promotion Creation.
       parameters:
@@ -597,25 +508,7 @@ paths:
         "201":
           description:  Promotion Created
 
-  /promotion/{promotionId}:
-    get:
-      summary: Promotion Information
-      description:
-        Promotion endpoint returns information about the promotion.
-      parameters:
-        - name: promotionId
-          in: path
-          description: Promotion
-          required: true
-          type: string
-          format: string
-      tags:
-        - Promotion
-      responses:
-        "200":
-          description: An Promotion object
-          schema:
-            $ref: '#/definitions/Promotion'
+  /admin/promotion/{promotionId}:
     put:
       summary: Promotion Modification
       parameters:
@@ -644,6 +537,158 @@ paths:
       responses:
         "204":
           description: Promotion Deleted
+
+################################################################################
+#                                   Location                                   #
+################################################################################ 
+
+  /location/{id}:
+    get:
+      summary: Location Information
+      description:
+        Location endpoint returns information about the location.
+      parameters:
+        - name: id
+          in: path
+          description: Location
+          required: true
+          type: string
+          format: string
+      tags:
+        - Location
+      responses:
+        "200":
+          description: An Location object
+          schema:
+            $ref: '#/definitions/Location'
+
+################################################################################
+#                               Location Items                                 #
+################################################################################
+
+  /location/{locationId}/items/{id}:
+    get:
+      summary: Item Information
+      description:
+        The Item endpoint returns information about the item.
+      parameters:
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
+      - name: id
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
+      tags:
+        - Item
+      responses:
+        "200":
+          description: Items available at location.
+          schema:
+            type: array
+            items:
+              type: string
+
+################################################################################
+#                             Location AddOn                                   #
+################################################################################
+
+  /location/{locationId}/addons:
+    get:
+      summary: AddOns from a Location
+      description:
+        The AddOn endpoint returns information about the addons.
+      parameters:
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
+      responses:
+        "201":
+          description: AddOn Created
+          schema:
+            $ref: '#/definitions/AddOn'
+
+  /location/{locationId}/addons/{id}:
+    get:
+      summary: AddOn Information
+      description:
+        The AddOn endpoint returns information about the addon.
+      parameters:
+      - name: locationId
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
+      - name: id
+        in: path
+        description: Item
+        required: true
+        type: string
+        format: string
+      tags:
+        - AddOn
+      responses:
+        "200":
+          description: An AddOn object
+          schema:
+            $ref: '#/definitions/AddOn'
+
+################################################################################
+#                                    Plan                                      #
+################################################################################ 
+
+  /plan/{planId}:
+    get:
+      summary: Plan Information
+      description:
+        The Plan endpoint returns information about the plan.
+      parameters:
+        - name: planId
+          in: path
+          description: Plan
+          required: true
+          type: string
+          format: string
+      tags:
+        - Plan
+      responses:
+        "200":
+          description: An Plan object
+          schema:
+            $ref: '#/definitions/Plan'
+
+################################################################################
+#                                  Promotions                                  #
+################################################################################
+
+  /promotion/{promotionId}:
+    get:
+      summary: Promotion Information
+      description:
+        Promotion endpoint returns information about the promotion.
+      parameters:
+        - name: promotionId
+          in: path
+          description: Promotion
+          required: true
+          type: string
+          format: string
+      tags:
+        - Promotion
+      responses:
+        "200":
+          description: An Promotion object
+          schema:
+            $ref: '#/definitions/Promotion'
          
 ################################################################################
 #                                 Definitions                                  #
@@ -840,3 +885,13 @@ definitions:
       endDate:
         type: string
         format: date-time
+
+  Token:
+    type: object
+    properties:
+      ttl: 
+        type: number
+      userId:
+        type: string
+      tokenId:
+        type: string
